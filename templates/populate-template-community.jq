@@ -64,9 +64,12 @@ def fillListTemplate($topLevelTemplate):
   .
   ;
 
-. | setpath(["items"]; [$versions
-                       | map(fillinTagTemplate(tagTemplate))
-                       | fillItemTemplate(itemTemplate])
-           )
-
-# items has become a dict, not a list of dicts, list, which is not right
+. | setpath(["items"];
+        $versions                             # ["1.13", ...
+        | map(fillinTagTemplate(tagTemplate)) # [{name:"1.13",...
+        | [fillItemTemplate(itemTemplate)]    # [{metadata:{name:ubi8-openjdk-8}}]
+        )
+# TODO:
+# itemTemplate "ubi8-openjdk-11"
+# itemTemplate "ubi8-openjdk-17"
+# itemTemplate "java"
