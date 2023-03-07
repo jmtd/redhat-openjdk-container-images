@@ -76,3 +76,15 @@ def fillListTemplate($topLevelTemplate):
         ])
 # TODO:
 # itemTemplate "java"
+#       need a variant of fillItemTemplate which replaces name with "java"
+#       and a more generic display name (Red Hat OpenJDK)
+#       the tags are
+#           "openjdk-8-ubi8"
+#           "8"
+#           "openjdk-11-ubi8"
+#           "11"
+#           "openjdk-17-ubi8"
+#           "latest"
+#       tag template need adjusting so annotation also has
+#                           "supports": "java:8,java",
+#                       annotatio ntags for 8, 11 also have +hidden
