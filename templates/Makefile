@@ -5,6 +5,3 @@ community-image-streams.json:
 		> $@
 
 .PHONY: community-image-streams.json
-
-example:
-	echo '{ "foo":"hug","bar":"you"}' | jq --slurpfile moo ubi8-versions.json '.foo=$moo'
