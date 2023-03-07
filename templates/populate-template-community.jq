@@ -6,8 +6,8 @@ def tagTemplate:
 {
     "name": "XXX",
     "annotations": {
-        "openshift.io/display-name": "Red Hat OpenJDK 1.8 (UBI8)",
-        "description": "Build and run Java applications using Maven and OpenJDK 1.8 upon UBI8.",
+        "openshift.io/display-name": "XXX",
+        "description": "XXX",
         "iconClass": "icon-rh-openjdk",
         "tags": "builder,java,openjdk,ubi8",
         "sampleRepo": "https://github.com/jboss-openshift/openshift-quickstarts",
@@ -19,19 +19,21 @@ def tagTemplate:
     },
     "from": {
         "kind": "DockerImage",
-        "name": "registry.access.redhat.com/ubi8/openjdk-8:"
+        "name": "registry.access.redhat.com/ubi8/openjdk-"
     }
 }
 ;
 
 # input should be a version "1.13"
 # (this is applied with map)
-def fillinTagTemplate($tagTemplate):
+def fillinTagTemplate($tagTemplate; $jdk):
   . as $in
   | $tagTemplate
   | setpath(["name"]; $in)
   | setpath(["annotations","version"]; $in)
-  | setpath(["from","name"]; $tagTemplate.from.name + $in)
+  | setpath(["annotations","description"]; "Build and run Java applications using Maven and OpenJDK "+$jdk+" upon UBI8.")
+  | setpath(["annotations", "openshift.io/display-name"]; "Red Hat OpenJDK " + $jdk + " (UBI8)")
+  | setpath(["from","name"]; $tagTemplate.from.name + $jdk + ":" + $in)
   ;
 
 def itemTemplate:
@@ -65,11 +67,12 @@ def fillListTemplate($topLevelTemplate):
   ;
 
 . | setpath(["items"];
-        $versions                             # ["1.13", ...
-        | map(fillinTagTemplate(tagTemplate)) # [{name:"1.13",...
-        | [fillItemTemplate(itemTemplate)]    # [{metadata:{name:ubi8-openjdk-8}}]
+        $versions[0].jdk8                         # ["1.13", ...
+        | map(fillinTagTemplate(tagTemplate;"8")) # [{name:"1.13",...
+        | [fillItemTemplate(itemTemplate)]        # [{metadata:{name:ubi8-openjdk-8}}]
         )
 # TODO:
 # itemTemplate "ubi8-openjdk-11"
 # itemTemplate "ubi8-openjdk-17"
 # itemTemplate "java"
+# keys jdk8, 11, 17 in the input,
