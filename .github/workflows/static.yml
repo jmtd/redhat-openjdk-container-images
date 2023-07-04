@@ -29,10 +29,10 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - name: generate foo document
+      - name: generate bar document
         run: |
           mkdir -p docs
-          date > docs/foo.html
+          date > docs/bar.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
