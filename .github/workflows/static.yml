@@ -32,7 +32,7 @@ jobs:
       - name: downloading existing pages
         uses: actions/download-artifact@v3
         with:
-          name: github-pages.tar
+          name: github-pages.tar.gz
 
       - name: generate foo document
         run: |
