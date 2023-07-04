@@ -29,8 +29,14 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: downloading existing pages
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
       - name: generate foo document
         run: |
+          ls -lhrt
           mkdir -p docs
           date > docs/foo.html
 
