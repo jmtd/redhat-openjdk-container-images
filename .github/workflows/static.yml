@@ -32,7 +32,7 @@ jobs:
 
       - id: result 
         uses: MichaelMelena/list-artifacts@v1
-      - run: echo 'list-artifacts: {' '${{ steps.result.outputs.artifacts }}' '}'
+      - run: echo 'list artifacts: ${{ steps.result.outputs.artifacts }}'
 
       - name: downloading existing pages
         uses: actions/download-artifact@v3
