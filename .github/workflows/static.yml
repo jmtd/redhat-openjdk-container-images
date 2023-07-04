@@ -29,10 +29,15 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+
+      - id: result 
+        uses: MichaelMelena/list-artifacts@v1
+      - run: echo '${{ steps.result.outputs.artifacts }}'
+
       - name: downloading existing pages
         uses: actions/download-artifact@v3
         with:
-          name: github-pages.tar.gz
+          name: github-pages
 
       - name: generate foo document
         run: |
