@@ -1,0 +1,45 @@
+name: POC doc gen issue
+on:
+  push:
+    branches:
+    - 'foo'
+    - 'bar'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'ref (branch or tag) to generate docs for'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  LANG: en_US.UTF-8
+
+jobs:
+  openjdkci:
+    name: OpenJDK S2I Build and Test
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+    steps:
+      - name: generate foo document
+        run: |
+          mkdir -p docs
+          date > docs/foo.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
