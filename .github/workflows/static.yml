@@ -34,14 +34,16 @@ jobs:
         uses: MichaelMelena/list-artifacts@v1
       - run: echo '${{ steps.result.outputs.artifacts }}'
 
-#     - name: downloading existing pages
-#       uses: actions/download-artifact@v3
-#       with:
-#         name: "github-pages"
+     - name: downloading existing pages
+       uses: actions/download-artifact@v3
+       with:
+         name: aggregated-docs
+         path: docs
 
       - name: generate foo document
         run: |
           mkdir -p docs
+          ls -R docs
           date > docs/foo.html
 
       - uses: actions/upload-artifact@v3
