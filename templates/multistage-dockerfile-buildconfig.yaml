@@ -5,12 +5,25 @@ metadata:
   annotations:
     description: Template to produce a light weight imagestream and buildconfig for a multistage build
   name: multistage-build-template
-parameters:
-- description: .
-  name: INTERMEDIATE_IMAGE
-  value: quay.io/jdowland/jlink:ubi9-jlinked-image
-  required: true
 objects:
+##############################################################################
+# the INPUT ImageStream (from phase 2)
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: intermediate
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: quay.io/jdowland/jlink:ubi9-jlinked-image
+      name: latest
+      referencePolicy:
+        type: Local
+##############################################################################
+# the OUTPUT ImageStream
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -18,34 +31,36 @@ objects:
   spec:
     lookupPolicy:
       local: false
+##############################################################################
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata: 
     name: multistage-buildconfig
   spec:
     source:
-     type: Dockerfile
-     dockerfile: |
-        FROM ${INTERMEDIATE_IMAGE} AS ubi9-jlinked-image
-        USER 0
-        RUN mkdir -p /mnt/jrootfs
-        RUN microdnf install --installroot /mnt/jrootfs --releasever 9 --setopt install_weak_deps=0 --nodocs -y \
-            --config=/etc/dnf/dnf.conf \
-            --noplugins \
-            --setopt=cachedir=/var/cache \
-            --setopt=reposdir=/etc/yum.repos.d \
-            --setopt=varsdir=/etc/dnf/vars \
-            grep gawk
-        RUN rm -rf /mnt/jrootfs/var/cache/* /mnt/jrootfs/var/lib/rpm /mnt/jrootfs/var/lib/dnf
-
-        #Stage-2:copy application JAR and jlinked JRE to runtime image
-        FROM registry.access.redhat.com/ubi9/ubi-micro AS lean-runtime
+      images:
+      - from: 
+          kind: ImageStreamTag
+          name: intermediate:latest
+        paths:
+#       path does not exist in intermediate image, yet
+#       - sourcePath:     /mnt/jrootfs
+#         destinationDir: jrootfs
+        - sourcePath:     /deployments
+          destinationDir: deployments
+        - sourcePath:     /tmp/jre/.
+          destinationDir: customJVM
+        - sourcePath:     /opt/jboss/container/.
+          destinationDir: runScripts
+      type: Dockerfile
+      dockerfile: |
+        FROM registry.access.redhat.com/ubi9/ubi-micro
         ARG JAVA_HOME=/usr/lib/jvm/java
 
-        COPY --from=ubi9-jlinked-image /mnt/jrootfs/ /
-        COPY --from=ubi9-jlinked-image /deployments /deployments
-        COPY --from=ubi9-jlinked-image /tmp/jre ${JAVA_HOME}
-        COPY --from=ubi9-jlinked-image /opt/jboss/container/ /opt/jboss/container/
+        #COPY jrootfs/    /
+        COPY deployments /
+        COPY customJVM   ${JAVA_HOME}
+        COPY runScripts  /opt/jboss/container/
         # these are in the micro image
         RUN rm -rf /var/lib/dnf /var/lib/rpm
 
