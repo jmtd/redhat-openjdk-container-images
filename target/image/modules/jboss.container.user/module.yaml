@@ -1,0 +1,37 @@
+artifacts: []
+description: Configures the default user and permissions.  This module should be included
+  by all images.
+envs:
+- name: USER
+  value: default
+- name: UID
+  value: 185
+- name: HOME
+  value: /home/default
+- name: GECOS
+  value: Default user
+execute:
+- directory: jboss.container.user
+  module_name: jboss.container.user
+  name: jboss.container.user/configure.sh
+  script: configure.sh
+labels: []
+modules:
+  install: []
+  repositories: []
+name: jboss.container.user
+osbs:
+  configuration: {}
+  repository: {}
+packages:
+  install:
+  - shadow-utils
+  repositories: []
+ports: []
+run:
+  name: run
+  user: 185
+  workdir: /home/default
+schema_version: 1
+version: '2.0'
+volumes: []

@@ -1,0 +1,18 @@
+artifacts: []
+description: A dummy descriptor to couple tests with jdk modules
+envs: []
+execute: []
+labels: []
+modules:
+  install: []
+  repositories: []
+name: jboss.container.openjdk
+osbs:
+  configuration: {}
+  repository: {}
+packages:
+  repositories: []
+ports: []
+schema_version: 1
+version: '0'
+volumes: []

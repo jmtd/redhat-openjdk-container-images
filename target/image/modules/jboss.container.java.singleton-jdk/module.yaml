@@ -1,0 +1,22 @@
+artifacts: []
+description: Ensures only a single JDK version is installed
+envs: []
+execute:
+- directory: jboss.container.java.singleton-jdk
+  module_name: jboss.container.java.singleton-jdk
+  name: jboss.container.java.singleton-jdk/configure.sh
+  script: configure.sh
+labels: []
+modules:
+  install: []
+  repositories: []
+name: jboss.container.java.singleton-jdk
+osbs:
+  configuration: {}
+  repository: {}
+packages:
+  repositories: []
+ports: []
+schema_version: 1
+version: '1.0'
+volumes: []

@@ -1,0 +1,23 @@
+artifacts: []
+description: Reinstall the tzdata package, to ensure zoneinfo is present.
+envs: []
+execute:
+- directory: jboss.container.util.tzdata
+  module_name: jboss.container.util.tzdata
+  name: jboss.container.util.tzdata/execute.sh
+  script: execute.sh
+labels: []
+modules:
+  install:
+  - name: jboss.container.util.pkg-update
+  repositories: []
+name: jboss.container.util.tzdata
+osbs:
+  configuration: {}
+  repository: {}
+packages:
+  repositories: []
+ports: []
+schema_version: 1
+version: '1.0'
+volumes: []
