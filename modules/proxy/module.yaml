@@ -22,6 +22,7 @@ envs:
 modules:
   install:
   - name: jboss.container.user
+  - name: jboss.container.java.run # just for $JBOSS_CONTAINER_JAVA_RUN_MODULE
 
 execute:
 - script: configure.sh

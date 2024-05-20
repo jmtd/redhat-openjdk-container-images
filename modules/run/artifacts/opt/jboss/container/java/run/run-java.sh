@@ -125,22 +125,19 @@ load_env() {
 
 # Combine all java options
 get_java_options() {
-  local jvm_opts
-  local debug_opts
-  local proxy_opts
   local opts
-  if [ -f "${JBOSS_CONTAINER_JAVA_JVM_MODULE}/java-default-options" ]; then
-    jvm_opts=$(${JBOSS_CONTAINER_JAVA_JVM_MODULE}/java-default-options)
-  fi
-  if [ -f "${JBOSS_CONTAINER_JAVA_JVM_MODULE}/debug-options" ]; then
-    debug_opts=$(${JBOSS_CONTAINER_JAVA_JVM_MODULE}/debug-options)
-  fi
-  if [ -f "${JBOSS_CONTAINER_JAVA_PROXY_MODULE}/proxy-options" ]; then
-    source "${JBOSS_CONTAINER_JAVA_PROXY_MODULE}/proxy-options"
-    proxy_opts="$(proxy_options)"
+
+  # JAVA_OPTS overrides all option generation
+  if [ -n "${JAVA_OPTS+isunset}" ]; then
+    echo "${JAVA_OPTS}"
+    return
   fi
 
-  opts=${JAVA_OPTS-${debug_opts} ${proxy_opts} ${jvm_opts} ${JAVA_OPTS_APPEND}}
+  for scriptlet in "$JBOSS_CONTAINER_JAVA_RUN_MODULE/opts.d"/*; do
+    opts="$opts $($scriptlet)"
+  done
+
+  opts="${opts} ${JAVA_OPTS_APPEND}"
   # Normalize spaces with awk (i.e. trim and eliminate double spaces)
   echo "${opts}" | awk '$1=$1'
 }
