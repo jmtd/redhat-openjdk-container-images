@@ -17,7 +17,7 @@ labels:
 - name: "maintainer"
   value: "Red Hat OpenJDK <openjdk@redhat.com>"
 - name: "com.redhat.component"
-  value: "openjdk-11-ubi9-container"
+  value: "openjdk-els-11-rhel9-container"
 - name: "usage"
   value: &docs "https://jboss-container-images.github.io/openjdk/"
 - name: "com.redhat.license_terms"
