@@ -23,7 +23,7 @@ labels:
 
 envs:
 - name: PATH
-  value: $PATH:"/usr/local/s2i"
+  value: $PATH:"/usr/libexec/s2i"
 - name: "LANG"
   value: "C.utf8"
 
