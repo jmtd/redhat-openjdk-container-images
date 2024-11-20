@@ -1,0 +1,7 @@
+schema_version: 1
+name: jboss.container.util.RHEL-67389
+version: '1.0'
+description: Workaround RHEL-67389
+
+execute:
+- script: execute.sh
