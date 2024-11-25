@@ -1,0 +1,39 @@
+schema_version: 1
+name: common
+version: '1.0'
+description: Common configuration across OpenJDK images
+
+labels:
+# these are BUILDER specific
+- name: "io.k8s.description"
+  value: "Platform for building and running plain Java applications (fat-jar and flat classpath)"
+- name: "io.k8s.display-name"
+  value: "Java Applications"
+- name: "io.openshift.tags"
+  value: "builder,java"
+# these are more generic
+- name: "maintainer"
+  value: "Red Hat OpenJDK <openjdk@redhat.com>"
+- name: "usage"
+  value: &docs "https://jboss-container-images.github.io/openjdk/"
+- name: "com.redhat.license_terms"
+  value: "https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+- name: "org.opencontainers.image.documentation"
+  value: *docs
+
+envs:
+- name: PATH
+  value: $PATH:"/usr/local/s2i"
+- name: "LANG"
+  value: "C.utf8"
+
+# builder specific
+ports:
+- value: 8080
+- value: 8443
+
+help:
+  add: true
+
+packages:
+  manager: microdnf

@@ -1,5 +1,4 @@
-# This is an Image descriptor for Cekit
-
+# This is an Image descriptor for <https://cekit.io/>
 schema_version: 1
 
 from: "registry.access.redhat.com/ubi10-beta/ubi-minimal:10.0-beta"
@@ -8,45 +7,24 @@ version: &version "1.21"
 description: "Source To Image (S2I) image for Red Hat OpenShift providing OpenJDK 21"
 
 labels:
-- name: "io.k8s.description"
-  value: "Platform for building and running plain Java applications (fat-jar and flat classpath)"
-- name: "io.k8s.display-name"
-  value: "Java Applications"
-- name: "io.openshift.tags"
-  value: "builder,java"
-- name: "maintainer"
-  value: "Red Hat OpenJDK <openjdk@redhat.com>"
 - name: "com.redhat.component"
   value: "openjdk-21-ubi10-container"
-- name: "usage"
-  value: &docs "https://rh-openjdk.github.io/redhat-openjdk-containers/"
-- name: "com.redhat.license_terms"
-  value: "https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
-- name: "org.opencontainers.image.documentation"
-  value: *docs
 - name: "name"
   value: *name
 - name: "version"
   value: *version
 
 envs:
-- name: PATH
-  value: $PATH:"/usr/local/s2i"
 - name: "JBOSS_IMAGE_NAME"
   value: *name
 - name: "JBOSS_IMAGE_VERSION"
   value: *version
-- name: "LANG"
-  value: "C.utf8"
-
-ports:
-- value: 8080
-- value: 8443
 
 modules:
   repositories:
   - path: modules
   install:
+  - name: common
   - name: jboss.container.util.RHEL-67389
   - name: jboss.container.util.pkg-update
   - name: jboss.container.openjdk.jdk
@@ -54,9 +32,3 @@ modules:
   - name: jboss.container.maven
     version: "3.8.21"
   - name: jboss.container.java.s2i.bash
-
-help:
-  add: true
-
-packages:
-  manager: microdnf
