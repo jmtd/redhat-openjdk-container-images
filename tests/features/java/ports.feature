@@ -1,5 +1,5 @@
-@ubi9/openjdk-17
-@ubi9/openjdk-21
+@ubi10/openjdk-17
+@ubi10/openjdk-21
 Feature: Openshift OpenJDK port tests
 
   Scenario: Check ports are available
