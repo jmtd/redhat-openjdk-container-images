@@ -8,13 +8,11 @@ osbs:
       compose:
         pulp_repos: true
         packages:
-        - java-17-openjdk
-        - java-17-openjdk-devel
-        - java-17-openjdk-headless
+        - java-21-openjdk-headless
         signing_intent: release
   repository:
     name: containers/openjdk
-    branch: openjdk-17-ubi9
+    branch: openjdk-21-runtime-ubi10
 
 packages:
   manager: microdnf

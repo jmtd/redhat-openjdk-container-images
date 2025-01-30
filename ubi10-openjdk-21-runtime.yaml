@@ -2,10 +2,10 @@
 
 schema_version: 1
 
-from: "registry.access.redhat.com/ubi9/ubi-minimal"
-name: &name "ubi9/openjdk-17-runtime"
+from: "registry.access.redhat.com/ubi10/ubi-minimal:latest"
+name: &name "ubi10/openjdk-21-runtime"
 version: &version "1.21"
-description: "Image for Red Hat OpenShift providing OpenJDK 17 runtime"
+description: "Image for Red Hat OpenShift providing OpenJDK 21 runtime"
 
 labels:
 - name: "io.k8s.description"
@@ -17,7 +17,7 @@ labels:
 - name: "maintainer"
   value: "Red Hat OpenJDK <openjdk@redhat.com>"
 - name: "com.redhat.component"
-  value: "openjdk-17-runtime-ubi9-container"
+  value: "openjdk-21-runtime-ubi10-container"
 - name: "usage"
   value: &docs "https://rh-openjdk.github.io/redhat-openjdk-containers/"
 - name: "com.redhat.license_terms"
@@ -48,7 +48,7 @@ modules:
   - name: jboss.container.util.pkg-update
   - name: jboss.container.tar
   - name: jboss.container.openjdk.jre
-    version: "17"
+    version: "21"
   - name: jboss.container.util.tzdata
   - name: jboss.container.java.jre.run
 
