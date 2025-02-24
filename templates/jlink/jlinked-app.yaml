@@ -325,4 +325,43 @@ objects:
     readyReplicas: 1
     replicas: 1
     updatedReplicas: 1
-  
+##############################################################################
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2025-02-24T16:56:55Z"
+    labels:
+      app: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/component: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/instance: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/name: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/part-of: quarkus-quickstart
+    name: quarkus-quickstart-lightweight-image
+    namespace: jlink6
+    resourceVersion: "580685"
+    uid: 614abff8-b7fb-4778-a910-83cbd9fc6bfb
+  spec:
+    host: quarkus-quickstart-lightweight-image-jlink6.apps-crc.testing
+    port:
+      targetPort: 8080-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: quarkus-quickstart-lightweight-image
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2025-02-24T16:56:55Z"
+        status: "True"
+        type: Admitted
+      host: quarkus-quickstart-lightweight-image-jlink6.apps-crc.testing
+      routerCanonicalHostname: router-default.apps-crc.testing
+      routerName: default
+      wildcardPolicy: None
