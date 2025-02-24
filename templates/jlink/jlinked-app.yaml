@@ -245,72 +245,84 @@ objects:
             kind: ImageStreamTag
             name: ${APPNAME}-ubimicro:latest  # ImageStreamTag for registry.access.redhat.com/ubi9/ubi-micro
 ##############################################################################
-# DeploymentConfig and Route object specs
-# DeploymentConfigs are discouraged, however the documentation sugggests to still
-# use them if features are missing from Deployments, which in our case they are.
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
-    name: ${APPNAME}-jlinked-app-deployment
     annotations:
-      template.alpha.openshift.io/wait-for-ready: "true"
+      alpha.image.policy.openshift.io/resolve-names: '*'
+      app.openshift.io/route-disabled: "false"
+      deployment.kubernetes.io/revision: "1"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"quarkus-quickstart-lightweight-image:latest","namespace":"jlink5"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarkus-quickstart-lightweight-image\")].image","paused":"false"}]'
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: "2025-02-20T11:13:53Z"
+    generation: 1
     labels:
-      app: ${APPNAME}
-      app.kubernetes.io/part-of: ${APPNAME}
+      app: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/component: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/instance: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/name: quarkus-quickstart-lightweight-image
+      app.kubernetes.io/part-of: quarkus-quickstart
+      app.openshift.io/runtime: debian
+      app.openshift.io/runtime-namespace: jlink5
+      app.openshift.io/runtime-version: latest
+    name: quarkus-quickstart-lightweight-image
+    namespace: jlink5
+    resourceVersion: "403028"
+    uid: 7ea3e02e-4004-4a37-b36e-5f099825462f
   spec:
+    progressDeadlineSeconds: 600
     replicas: 1
+    revisionHistoryLimit: 10
     selector:
-      app: ${APPNAME}
+      matchLabels:
+        app: quarkus-quickstart-lightweight-image
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
     template:
       metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        creationTimestamp: null
         labels:
-          app: ${APPNAME}
-          app.kubernetes.io/part-of: ${APPNAME}
+          app: quarkus-quickstart-lightweight-image
+          deployment: quarkus-quickstart-lightweight-image
       spec:
         containers:
-          - name: ${APPNAME}-jlinked-app-container
-            image: ${APPNAME}-lightweight-image:latest
-            ports:
-              - containerPort: ${{TARGET_PORT}}
-                protocol: TCP
-    strategy:
-      type: Rolling
-    triggers:
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - ${APPNAME}-jlinked-app-container
-        from:
-          kind: ImageStreamTag
-          name: '${APPNAME}-lightweight-image:latest'
-          namespace: default
-    - type: ConfigChange
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: ${APPNAME}-jlinked-app-service
-    labels:
-      app: ${APPNAME}
-      app.kubernetes.io/part-of: ${APPNAME}
-  spec:
-    selector:
-      app: ${APPNAME}
-    ports:
-      - protocol: TCP
-        name: target-${TARGET_PORT}-tcp
-        port: ${{SERVICE_PORT}}
-        targetPort: ${{TARGET_PORT}}
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    name: ${APPNAME}-jlinked-app-route
-    labels:
-      app: ${APPNAME}
-      app.kubernetes.io/part-of: ${APPNAME}
-  spec:
-    to:
-      kind: Service
-      name: ${APPNAME}-jlinked-app-service
-    port:
-      targetPort: ${{TARGET_PORT}}
+        - image: image-registry.openshift-image-registry.svc:5000/jlink5/quarkus-quickstart-lightweight-image@sha256:22624069728d1911086f5762886b14ea6c90d29d51e30c7dbbe53020f97386f6
+          imagePullPolicy: IfNotPresent
+          name: quarkus-quickstart-lightweight-image
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-02-20T11:13:56Z"
+      lastUpdateTime: "2025-02-20T11:13:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-02-20T11:13:53Z"
+      lastUpdateTime: "2025-02-20T11:13:56Z"
+      message: ReplicaSet "quarkus-quickstart-lightweight-image-5b85d46bd6" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+  
