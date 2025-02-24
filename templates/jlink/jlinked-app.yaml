@@ -253,8 +253,6 @@ objects:
       app.openshift.io/route-disabled: "false"
       deployment.kubernetes.io/revision: "1"
       image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"quarkus-quickstart-lightweight-image:latest","namespace":"jlink5"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarkus-quickstart-lightweight-image\")].image","paused":"false"}]'
-      openshift.io/generated-by: OpenShiftWebConsole
-    creationTimestamp: "2025-02-20T11:13:53Z"
     generation: 1
     labels:
       app: quarkus-quickstart-lightweight-image
@@ -266,9 +264,7 @@ objects:
       app.openshift.io/runtime-namespace: jlink5
       app.openshift.io/runtime-version: latest
     name: quarkus-quickstart-lightweight-image
-    namespace: jlink5
-    resourceVersion: "403028"
-    uid: 7ea3e02e-4004-4a37-b36e-5f099825462f
+    namespace: jlink6
   spec:
     progressDeadlineSeconds: 600
     replicas: 1
@@ -291,7 +287,7 @@ objects:
           deployment: quarkus-quickstart-lightweight-image
       spec:
         containers:
-        - image: image-registry.openshift-image-registry.svc:5000/jlink5/quarkus-quickstart-lightweight-image@sha256:22624069728d1911086f5762886b14ea6c90d29d51e30c7dbbe53020f97386f6
+        - image: image-registry.openshift-image-registry.svc:5000/jlink6/quarkus-quickstart-lightweight-image@sha256:22624069728d1911086f5762886b14ea6c90d29d51e30c7dbbe53020f97386f6
           imagePullPolicy: IfNotPresent
           name: quarkus-quickstart-lightweight-image
           ports:
@@ -305,26 +301,6 @@ objects:
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
-  status:
-    availableReplicas: 1
-    conditions:
-    - lastTransitionTime: "2025-02-20T11:13:56Z"
-      lastUpdateTime: "2025-02-20T11:13:56Z"
-      message: Deployment has minimum availability.
-      reason: MinimumReplicasAvailable
-      status: "True"
-      type: Available
-    - lastTransitionTime: "2025-02-20T11:13:53Z"
-      lastUpdateTime: "2025-02-20T11:13:56Z"
-      message: ReplicaSet "quarkus-quickstart-lightweight-image-5b85d46bd6" has successfully
-        progressed.
-      reason: NewReplicaSetAvailable
-      status: "True"
-      type: Progressing
-    observedGeneration: 1
-    readyReplicas: 1
-    replicas: 1
-    updatedReplicas: 1
 ##############################################################################
 - apiVersion: route.openshift.io/v1
   kind: Route
@@ -332,7 +308,6 @@ objects:
     annotations:
       openshift.io/generated-by: OpenShiftWebConsole
       openshift.io/host.generated: "true"
-    creationTimestamp: "2025-02-24T16:56:55Z"
     labels:
       app: quarkus-quickstart-lightweight-image
       app.kubernetes.io/component: quarkus-quickstart-lightweight-image
@@ -340,9 +315,6 @@ objects:
       app.kubernetes.io/name: quarkus-quickstart-lightweight-image
       app.kubernetes.io/part-of: quarkus-quickstart
     name: quarkus-quickstart-lightweight-image
-    namespace: jlink6
-    resourceVersion: "580685"
-    uid: 614abff8-b7fb-4778-a910-83cbd9fc6bfb
   spec:
     host: quarkus-quickstart-lightweight-image-jlink6.apps-crc.testing
     port:
