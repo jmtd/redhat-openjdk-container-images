@@ -20,16 +20,22 @@ function maven_init_vars() {
 }
 
 function maven_init_var_MAVEN_LOCAL_REPO() {
-  MAVEN_LOCAL_REPO="${MAVEN_LOCAL_REPO:-${HOME}/.m2/repository}"
+  MAVEN_LOCAL_REPO="${MAVEN_LOCAL_REPO:-${_MAVEN_S2I_ARCHIVED_REPO}}"
 }
 
+# Overrides basic functionality by looking for settings.xml in <source>/configuration
 function maven_init_var_MAVEN_SETTINGS_XML() {
   if [ -f "${MAVEN_SETTINGS_XML}" ]; then
     :
+  elif [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
+    MAVEN_SETTINGS_XML="${HOME}/.m2/settings.xml"
+    mkdir -p $(dirname "${MAVEN_SETTINGS_XML}")
+    cp "${S2I_SOURCE_DIR}/configuration/settings.xml" "${MAVEN_SETTINGS_XML}"
   elif [ -f "${HOME}/.m2/settings.xml" ]; then
     MAVEN_SETTINGS_XML="${HOME}/.m2/settings.xml"
   else
-    MAVEN_SETTINGS_XML="${JBOSS_CONTAINER_MAVEN_DEFAULT_MODULE}/jboss-settings.xml"
+    MAVEN_SETTINGS_XML="${_MAVEN_S2I_SETTINGS_XML}"
+    cp "${JBOSS_CONTAINER_MAVEN_DEFAULT_MODULE}/jboss-settings.xml" "${MAVEN_SETTINGS_XML}"
   fi
 }
 
@@ -57,7 +63,14 @@ function maven_init_settings() {
 }
 
 function maven_init_local_repo() {
-  :
+  # unpack artifacts from previous build
+  if [ -d "${_MAVEN_S2I_ARCHIVED_REPO}" -a "${MAVEN_LOCAL_REPO}" != "${_MAVEN_S2I_ARCHIVED_REPO}" ]; then
+    # copy to expected repo location
+    cp -rpn "${_MAVEN_S2I_ARCHIVED_REPO}" "${MAVEN_LOCAL_REPO}"
+    rm -rf "${_MAVEN_S2I_ARCHIVED_REPO}"
+    # allows save-artifacts to work without modification
+    ln -s "${MAVEN_LOCAL_REPO}" "${_MAVEN_S2I_ARCHIVED_REPO}"
+  fi
 }
 
 # perform a maven build
@@ -212,6 +225,11 @@ function add_maven_mirrors() {
 }
 
 # private
+
+# Location of archived local Maven repository.  Used with incremental builds.
+_MAVEN_S2I_ARCHIVED_REPO="${S2I_ARTIFACTS_DIR}/m2"
+
+
 function _add_maven_mirror() {
   local settings="${1}"
   local mirror_id="${2}"
