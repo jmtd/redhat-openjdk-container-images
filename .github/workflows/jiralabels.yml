@@ -17,6 +17,7 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
           URIPAT:  "https://issues.redhat.com/browse/OPENJDK-"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if echo "$PR_BODY" | grep -q "$URIPAT"; then
             echo "missing=false" >> $GITHUB_OUTPUT
