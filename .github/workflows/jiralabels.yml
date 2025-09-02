@@ -8,12 +8,14 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  GH_REPO: ${{ github.repository }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NUM: ${{ github.event.pull_request.number }}
+
 jobs:
   validate-url:
     runs-on: ubuntu-latest
-    env:
-      GH_REPO: ${{ github.repository }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check for required URI pattern
         id: check_uri
@@ -29,11 +31,11 @@ jobs:
 
       - name: Apply label if URI missing
         if: steps.check_uri.outputs.missing == 'true'
-        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "needs-jira-issue"
+        run: gh pr edit "$NUM" --add-label "needs-jira-issue"
 
       - name: Remove label if URI present
         if: steps.check_uri.outputs.missing == 'false'
-        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "needs-jira-issue"
+        run: gh pr edit "$NUM" --remove-label "needs-jira-issue"
 
       - name: Add branch label if missing
-        run: gh pr edit --add-label "$GITHUB_BASE_REF"
+        run: gh pr edit "$NUM" --add-label "$GITHUB_BASE_REF"
