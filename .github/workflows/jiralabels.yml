@@ -17,7 +17,6 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
           URIPAT:  "https://issues.redhat.com/browse/OPENJDK-"
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if echo "$PR_BODY" | grep -q "$URIPAT"; then
             echo "missing=false" >> $GITHUB_OUTPUT
@@ -28,10 +27,16 @@ jobs:
       - name: Apply label if URI missing
         if: steps.check_uri.outputs.missing == 'true'
         run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "needs-jira-issue"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove label if URI present
         if: steps.check_uri.outputs.missing == 'false'
         run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "needs-jira-issue"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add branch label if missing
         run: gh pr edit --add-label ${{ github.event.pull_request.base.label }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
