@@ -26,8 +26,11 @@ jobs:
 
       - name: Apply label if URI missing
         if: steps.check_uri.outputs.missing == 'true'
-        run: gh pr edit "${{ github.event.pr.number }}" --add-label "needs-jira-issue"
+        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "needs-jira-issue"
 
       - name: Remove label if URI present
         if: steps.check_uri.outputs.missing == 'false'
-        run: gh pr edit "${{ github.event.pr.number }}" --remove-label "needs-jira-issue"
+        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "needs-jira-issue"
+
+      - name: Add branch label if missing
+        run: gh pr edit --add-label ${{ github.event.pull_request.base.label }}
