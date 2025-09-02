@@ -28,15 +28,18 @@ jobs:
         if: steps.check_uri.outputs.missing == 'true'
         run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "needs-jira-issue"
         env:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove label if URI present
         if: steps.check_uri.outputs.missing == 'false'
         run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "needs-jira-issue"
         env:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add branch label if missing
         run: gh pr edit --add-label ${{ github.event.pull_request.base.label }}
-        env:
+        nv:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
