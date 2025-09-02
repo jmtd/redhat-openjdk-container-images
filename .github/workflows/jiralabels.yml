@@ -14,7 +14,6 @@ jobs:
     env:
       GH_REPO: ${{ github.repository }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      LABEL: ${{ github.event.pull_request.base.label }} # not quite. it's e.g. jmtd:ubi9
     steps:
       - name: Check for required URI pattern
         id: check_uri
@@ -37,4 +36,4 @@ jobs:
         run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "needs-jira-issue"
 
       - name: Add branch label if missing
-        run: gh pr edit --add-label "$LABEL"
+        run: gh pr edit --add-label "$GITHUB_BASE_REF"
