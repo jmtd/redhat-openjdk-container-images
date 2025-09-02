@@ -40,6 +40,6 @@ jobs:
 
       - name: Add branch label if missing
         run: gh pr edit --add-label ${{ github.event.pull_request.base.label }}
-        nv:
+        env:
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
