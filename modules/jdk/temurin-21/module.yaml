@@ -1,0 +1,19 @@
+schema_version: 1
+
+name: "jboss.container.temurin.jdk"
+description: "Installs Adoptium Temurin OpenJDK 21."
+version: &jdkver "21"
+
+envs:
+- name: JBOSS_CONTAINER_OPENJDK_JDK_MODULE
+  value: /opt/jboss/container/openjdk/jdk
+- name: JAVA_HOME
+  value: /usr/lib/jvm/java-21-temurin-jdk
+
+packages:
+  install:
+  - temurin-21-jdk
+
+modules:
+  install:
+  - name: jboss.container.adoptium

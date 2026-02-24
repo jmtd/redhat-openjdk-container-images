@@ -1,0 +1,7 @@
+schema_version: 1
+name: jboss.container.adoptium
+version: '1.0'
+description: Configures Adoptium RPM sources
+
+execute:
+- script: configure.sh

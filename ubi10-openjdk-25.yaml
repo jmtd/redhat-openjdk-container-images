@@ -52,13 +52,13 @@ modules:
   repositories:
   - path: modules
   install:
-  - name: jboss.container.util.pkg-update
-  - name: jboss.container.openjdk.jdk
+# - name: jboss.container.util.pkg-update
+  - name: jboss.container.temurin.jdk
     version: "25"
-  - name: jboss.container.maven
-    version: "3.9.21"
-  - name: jboss.container.java.s2i.bash
-  - name: jboss.container.java.singleton-jdk
+# - name: jboss.container.maven
+#   version: "3.9.21"
+# - name: jboss.container.java.s2i.bash
+# - name: jboss.container.java.singleton-jdk
 
 help:
   add: true
