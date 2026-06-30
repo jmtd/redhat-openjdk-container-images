@@ -78,3 +78,5 @@ konflux:
     installWeakDeps: false
     moduleEnable:
     - "maven:3.8"
+    reinstallPackages:
+    - tzdata
