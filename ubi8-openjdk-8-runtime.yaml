@@ -3,7 +3,7 @@
 schema_version: 1
 
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
-name: &name "ubi8/openjdk-8-runtime"
+name: &name "openjdk-els/openjdk-8-runtime-rhel8"
 version: &version "1.23"
 description: "Image for Red Hat OpenShift providing OpenJDK 1.8 runtime"
 
@@ -17,11 +17,11 @@ labels:
 - name: "maintainer"
   value: "Red Hat OpenJDK <openjdk@redhat.com>"
 - name: "com.redhat.component"
-  value: "openjdk-8-runtime-ubi8-container"
+  value: "openjdk-els-8-runtime-rhel8-container"
 - name: "usage"
   value: &docs "https://rh-openjdk.github.io/redhat-openjdk-containers/"
 - name: "com.redhat.license_terms"
-  value: "https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+  value: "https://www.redhat.com/en/about/red-hat-end-user-license-agreements"
 - name: "org.opencontainers.image.documentation"
   value: *docs
 - name: "name"
