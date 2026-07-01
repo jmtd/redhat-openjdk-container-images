@@ -1,4 +1,4 @@
-@ubi8/openjdk-8
+@openjdk-els/openjdk-8-rhel8
 @ubi8/openjdk-11
 # Tests for jboss/container/jolokia
 Feature: Openshift OpenJDK Jolokia tests

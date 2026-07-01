@@ -1,4 +1,5 @@
 @ubi8
+@openjdk-els
 Feature: OpenJDK run script tests
   Scenario: OPENJDK-3009: Ensure command-line options containing 'password' are masked in logs
     Given container is started with env

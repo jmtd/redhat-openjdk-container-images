@@ -1,9 +1,10 @@
-@ubi8/openjdk-8
+@openjdk-els/openjdk-8-rhel8
 @ubi8/openjdk-11
 @ubi8/openjdk-17
 @ubi8/openjdk-21
 Feature: Openshift OpenJDK Runtime tests
   @ubi8
+  @openjdk-els
   Scenario: Check JAVA_APP_NAME can contain spaces (OPENJDK-104)
     Given container is started with env
     | variable         | value   |
@@ -11,11 +12,13 @@ Feature: Openshift OpenJDK Runtime tests
   Then container log should not contain exec: bar': not found
 
   @ubi8
+  @openjdk-els
   Scenario: Check default JAVA_APP_DIR (OPENJDK-2033)
   When container is ready
   Then available container log should contain INFO running in /deployments
 
   @ubi8
+  @openjdk-els
   Scenario: Check custom JAVA_APP_DIR (OPENJDK-2033)
     Given container is started with env
     | variable     | value       |
@@ -23,6 +26,7 @@ Feature: Openshift OpenJDK Runtime tests
   Then available container log should contain INFO running in /home/jboss
 
   @ubi8
+  @openjdk-els
   Scenario: Check relative path JAVA_APP_DIR (OPENJDK-2033)
     Given container is started with env
     | variable     | value  |
@@ -30,21 +34,26 @@ Feature: Openshift OpenJDK Runtime tests
   Then available container log should contain INFO running in /home/jboss
 
   @ubi8
+  @openjdk-els
   Scenario: Check non-existent path JAVA_APP_DIR (OPENJDK-2033)
     Given container is started with env
     | variable     | value  |
     | JAVA_APP_DIR | /nope  |
   Then available container log should contain ERROR No directory /nope found for auto detection
+
+  # builder only, since it relies on s2i
   Scenario: Ensure JVM_ARGS is no longer present in the run script
     Given s2i build https://github.com/rh-openjdk/openjdk-container-test-applications.git from undertow-servlet
     Then file /usr/local/s2i/run should not contain JVM_ARGS
 
+  # builder only, since it relies on s2i
   Scenario: Ensure JAVA_ARGS are passed through to the running java application
     Given s2i build https://github.com/rh-openjdk/openjdk-container-test-applications.git from undertow-servlet
        | variable    | value               |
        | JAVA_ARGS   | Hello from CTF test |
     Then container log should contain /deployments/undertow-servlet.jar Hello from CTF test
 
+  # builder only, since it relies on s2i
   Scenario: Ensure diagnostic options work correctly
     Given s2i build https://github.com/rh-openjdk/openjdk-container-test-applications.git from undertow-servlet
        | variable         | value               |
@@ -54,6 +63,7 @@ Feature: Openshift OpenJDK Runtime tests
       And container log should contain -XX:NativeMemoryTracking=summary
 
   @ubi8
+  @openjdk-els
   Scenario: OPENJDK-474 to ensure JAVA_ARGS is not duplicated in the java command line
     Given container is started with env
     | variable  | value  |

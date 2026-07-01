@@ -1,7 +1,7 @@
 # temporarily marking 'ignore' so these tests are skipped on GHA
 # See: https://issues.redhat.com/browse/OPENJDK-2602
 @ignore
-@ubi8/openjdk-8
+@openjdk-els/openjdk-8-rhel8
 @ubi8/openjdk-11
 @ubi8/openjdk-17
 @ubi8/openjdk-21

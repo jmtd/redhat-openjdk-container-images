@@ -1,6 +1,7 @@
 Feature: Miscellaneous general settings unit tests
 
   @ubi8
+  @openjdk-els
   Scenario: Check the attributes of /home/jboss using stat
     When container is started with args
     | arg     | value            |
